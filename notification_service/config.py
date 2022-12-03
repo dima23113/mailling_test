@@ -11,8 +11,15 @@ class DjangoSettings:
 
 
 @dataclass
+class MessageSenderApi:
+    token: str
+    url: str
+
+
+@dataclass
 class Config:
     django: DjangoSettings
+    sender_api: MessageSenderApi
 
 
 def load_config(path):
@@ -22,6 +29,10 @@ def load_config(path):
         django=DjangoSettings(
             secret_key=env.str('SECRET_KEY'),
             celery_broker=env.str('CELERY_BROKER_URL'),
-            celery_result=env.str('CELERY_RESULT_BACKEND')
+            celery_result=env.str('CELERY_RESULT_BACKEND'),
+        ),
+        sender_api=MessageSenderApi(
+            token=env.str('TOKEN'),
+            url=env.str('URL')
         )
     )

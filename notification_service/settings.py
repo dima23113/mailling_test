@@ -126,3 +126,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = config.django.celery_broker
 CELERY_RESULT_BACKEND = config.django.celery_result
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST_USER = 'tes1t@2.ru'

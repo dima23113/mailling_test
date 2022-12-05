@@ -8,7 +8,7 @@ from .serializers import MailingSerializer, ClientSerializer, MessageSerializer
 
 
 class ClientViewSet(viewsets.ModelViewSet):
-    """ААААААААААААААААА"""
+    """API клиента"""
     serializer_class = ClientSerializer
     queryset = Client.objects.all()
 
@@ -62,21 +62,22 @@ class MailingViewSet(viewsets.ModelViewSet):
         """
         Summary data for all mailings
         """
-        total_count = Mailing.objects.count()
-        mailing = Mailing.objects.values('id')
+        mailing = Mailing.objects.all()
+        total_count = mailing.count()
         content = {'Total number of mailings': total_count,
                    'The number of messages sent': ''}
         result = {}
 
-        for row in mailing:
+        for mail in mailing:
             res = {'Total messages': 0, 'Sent': 0, 'No sent': 0}
-            mail = Message.objects.filter(mailing_id=row['id']).all()
-            group_sent = mail.filter(sending_status='Sent').count()
-            group_no_sent = mail.filter(sending_status='No sent').count()
-            res['Total messages'] = len(mail)
+            msg = Message.objects.filter(mailing=mail).all()
+            group_sent = msg.filter(sending_status='sent').count()
+            group_no_sent = msg.filter(sending_status='no sent').count()
+            res['Total messages'] = len(msg)
             res['Sent'] = group_sent
             res['No sent'] = group_no_sent
-            result[row['id']] = res
+            row = f'mailing id: {mail.id} - start {mail.time_start} - end {mail.time_end}'
+            result[row] = res
 
         content['The number of messages sent'] = result
         return Response(content)

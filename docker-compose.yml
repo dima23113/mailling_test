@@ -40,6 +40,6 @@ services:
       - web
       - celery
   test:
-    image: registry.gitlab.com/namedima4/mailling_test
+    image: registry.gitlab.com/namedima4/mailling_test:${CI_BUILD_REF_NAME}
     command: python manage.py test
     restart: "no"

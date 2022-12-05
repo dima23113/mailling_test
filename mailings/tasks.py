@@ -3,14 +3,12 @@ import requests
 import pytz
 import datetime
 from celery.utils.log import get_task_logger
-from django.conf import settings
+from notification_service.settings import config
 
 from .models import Message, Client, Mailing
 from notification_service.celery import app
 
 logger = get_task_logger(__name__)
-
-config = settings.config
 
 URL = config.sender_api.url
 TOKEN = config.sender_api.token
